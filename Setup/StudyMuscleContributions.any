@@ -554,7 +554,7 @@ AnyFolder MuscleContributions =
   AnyFloat val = sum(Obj2Num(Objects)') + 0*MuscleVast.Fx + 0.001*{1,1,1};
   
   
-  AnyVar W = Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81;
+  AnyVar W = Main.HumanModel.Anthropometrics.BodyMass*9.81;
   
   AnyFloat TestMuscleContributions = val/W;
   

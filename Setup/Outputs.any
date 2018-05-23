@@ -24,12 +24,12 @@ Main.HumanModel.BodyModel.Left.Leg.MomentMeasure = {
 //  RightHip_MediolateralForce     = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[0]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
 //  RightHip_ProximoDistalForce    = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[2]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
 //  RightHip_AnteroPosteriorForce  = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[1]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
-//  AnyVar RightHip_Absolute_BW    = ((sqrt(RightHip_MediolateralForce^2) + sqrt(RightHip_ProximoDistalForce^2) + sqrt(RightHip_AnteroPosteriorForce^2)) /(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass) * 9.8);
+//  AnyVar RightHip_Absolute_BW    = ((sqrt(RightHip_MediolateralForce^2) + sqrt(RightHip_ProximoDistalForce^2) + sqrt(RightHip_AnteroPosteriorForce^2)) /(Main.HumanModel.Anthropometrics.BodyMass) * 9.8);
 //  
 //  LeftHip_MediolateralForce     = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[0]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
 //  LeftHip_ProximoDistalForce    = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[2]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
 //  LeftHip_AnteroPosteriorForce  = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[1]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
-//  AnyVar LeftHip_Absolute_BW    = ((sqrt(LeftHip_MediolateralForce^2) + sqrt(LeftHip_ProximoDistalForce^2) + sqrt(LeftHip_AnteroPosteriorForce^2)) /(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass) * 9.8);
+//  AnyVar LeftHip_Absolute_BW    = ((sqrt(LeftHip_MediolateralForce^2) + sqrt(LeftHip_ProximoDistalForce^2) + sqrt(LeftHip_AnteroPosteriorForce^2)) /(Main.HumanModel.Anthropometrics.BodyMass) * 9.8);
 //};
 //
 
@@ -84,32 +84,32 @@ Main.HumanModel.BodyModel.Right.Leg.MomentMeasure = {
   };
 };
 Main.Studies.InverseDynamicStudy.CollectedOuputs = {
-  AnyFloat RightHip_MediolateralForce_ortho3     = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[0]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
-  AnyFloat RightHip_ProximoDistalForce_ortho3    = -1*(Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[2]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
-  AnyFloat RightHip_AnteroPosteriorForce_ortho3  = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[1]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
+  AnyFloat RightHip_MediolateralForce_ortho3     = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[0]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.HumanModel.Anthropometrics.BodyMass*9.81);
+  AnyFloat RightHip_ProximoDistalForce_ortho3    = -1*(Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[2]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.HumanModel.Anthropometrics.BodyMass*9.81);
+  AnyFloat RightHip_AnteroPosteriorForce_ortho3  = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[1]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.HumanModel.Anthropometrics.BodyMass*9.81);
 };
 
-AnyFolder Normalized = {
-  #define _TIMES  Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data
-  #define _LABELS Main.ModelSetup.C3DFileData.Groups.EVENT.LABELS.Data
-  
-
-  
-  Normalized_Absicssa Right_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
-    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[1][1];
-    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[4][1];
-    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[5][1];
-    MiddleEventPercent = 60;
-  };
-  Normalized_Absicssa Left_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
-    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[0][1];
-    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[2][1];
-    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[3][1];
-    MiddleEventPercent = 60;
-  };
-  
-  
-};
+//AnyFolder Normalized = {
+//  #define _TIMES  Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data
+//  #define _LABELS Main.ModelSetup.C3DFileData.Groups.EVENT.LABELS.Data
+//  
+//
+//  
+//  Normalized_Absicssa Right_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
+//    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[1][1];
+//    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[4][1];
+//    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[5][1];
+//    MiddleEventPercent = 60;
+//  };
+//  Normalized_Absicssa Left_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
+//    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[0][1];
+//    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[2][1];
+//    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[3][1];
+//    MiddleEventPercent = 60;
+//  };
+//  
+//  
+//};
 //  
 
 

@@ -2,30 +2,53 @@ Main.ModelSetup.SubjectSpecificData =
 {
   
   
-  Anthropometrics={
+  Main.HumanModel.Anthropometrics =
+  {
     BodyMass = 78;
     BodyHeight = 172/100;
     
+      // These antrhopometric data will be used as initial guess for 
+      // the optimization alogorithm the optimization algoritm will
+      // allow changes to the segment lengths 
+      #ifndef BODYHEIGHT_INITIAL_GUESS
+      #define BODYHEIGHT_INITIAL_GUESS BodyHeight 
+      #endif    
     
-    // These antrhopometric data will be used as initial guess for 
-    // the optimization alogorithm the optimization algoritm will
-    // allow changes to the segment lengths 
-    #ifndef BODYHEIGHT_INITIAL_GUESS
-    #define BODYHEIGHT_INITIAL_GUESS BodyHeight 
-    #endif
+     SegmentDimensions =
+     {
+       PelvisWidth = .BODYHEIGHT_INITIAL_GUESS * 0.105; ///< Distance between hip joints
+       HeadHeight = .BODYHEIGHT_INITIAL_GUESS * 0.075; ///< Height in neutral position from  C1HatNode to top of head
+       TrunkHeight = .BODYHEIGHT_INITIAL_GUESS * 0.38;
+     
+       Right = 
+       {
+          UpperArmLength = ..BODYHEIGHT_INITIAL_GUESS * 0.145;
+          LowerArmLength = ..BODYHEIGHT_INITIAL_GUESS * 0.15;
+          HandLength = ..BODYHEIGHT_INITIAL_GUESS * 0.12;
+          HandBreadth = DesignVar(0.085);
+          
+          ThighLength = ..BODYHEIGHT_INITIAL_GUESS * 0.22; 
+          ShankLength = ..BODYHEIGHT_INITIAL_GUESS * 0.23;
+          FootLength = ..BODYHEIGHT_INITIAL_GUESS * 0.11; 
+          
+       };
+     
+       Left = 
+       {
+          UpperArmLength = ..BODYHEIGHT_INITIAL_GUESS * 0.145;
+          LowerArmLength = ..BODYHEIGHT_INITIAL_GUESS * 0.15;
+          HandLength = ..BODYHEIGHT_INITIAL_GUESS * 0.12;
+          HandBreadth = DesignVar(0.085);
+          
+          ThighLength = ..BODYHEIGHT_INITIAL_GUESS * 0.22; 
+          ShankLength = ..BODYHEIGHT_INITIAL_GUESS * 0.23;
+          FootLength = ..BODYHEIGHT_INITIAL_GUESS * 0.11; 
+       };
+     };
+
     
-    ThighLengthIni = BODYHEIGHT_INITIAL_GUESS * 0.22; 
-    ShankLengthIni = BODYHEIGHT_INITIAL_GUESS * 0.23; 
-    FootLengthIni =  BODYHEIGHT_INITIAL_GUESS * 0.11; 
-    PelvisWidthIni = BODYHEIGHT_INITIAL_GUESS * 0.105; ///< 0.105;  distance between hip joints
-    NeckLengthIni = BODYHEIGHT_INITIAL_GUESS * 0.075; ///< Distance from C7T1 joint to C1C0 joint
-    HeadHeightIni = BODYHEIGHT_INITIAL_GUESS * 0.075;///< height in neutral position from  C1HatNode to top of head
-    TrunkWidthIni = BODYHEIGHT_INITIAL_GUESS * 0.18; ///< Distance between left and right acromium 
-    TrunkHeightIni = BODYHEIGHT_INITIAL_GUESS * 0.38 ;///< height in neautral position from  C1HatNode to L5SacrumJnt
-    UpperArmLengthIni = BODYHEIGHT_INITIAL_GUESS * 0.145;
-    LowerArmLengthIni =  BODYHEIGHT_INITIAL_GUESS * 0.15;
-    HandLengthIni = BODYHEIGHT_INITIAL_GUESS * 0.12;
-    HandBreadthIni = 0.085;  
+
+    
   };
 
 };

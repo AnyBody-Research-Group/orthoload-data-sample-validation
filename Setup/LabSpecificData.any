@@ -30,13 +30,19 @@ Main.ModelSetup.LabSpecificData =
    
   // This defines what segment lengths are optimized:
   OptimizeAnthropometricsOnOff OptimizeAntropometricsOnOff (
-  PelvisWidthOnOff    = "On" , 
-  ThighLengthOnOff    = "On", 
-  ShankLengthOnOff    = "On", 
-  FootLengthOnOff     = "On", 
-  HeadHeightOnOff     = "Off", 
-  TrunkHeightOnOff    = "On", 
-  UpperArmLengthOnOff = "Off",
-  LowerArmLengthOnOff = "Off"
+    PELVIS_WIDTH    = ON , 
+    RIGHT_THIGH_LENGTH    = ON, 
+    LEFT_THIGH_LENGTH    = ON, 
+    RIGHT_SHANK_LENGTH= ON, 
+    LEFT_SHANK_LENGTH = ON,
+    RIGHT_FOOT_LENGTH= ON, 
+    LEFT_FOOT_LENGTH = ON,
+    HEAD_HEIGHT = OFF, 
+    TRUNK_HEIGHT= ON, 
+    RIGHT_UPPERARM_LENGTH= OFF, 
+    LEFT_UPPERARM_LENGTH = OFF,
+    RIGHT_LOWERARM_LENGTH= OFF, 
+    LEFT_LOWERARM_LENGTH = OFF,
+    LEFT_RIGHT_SYMMETRY = ON
   ) ={};
 };
