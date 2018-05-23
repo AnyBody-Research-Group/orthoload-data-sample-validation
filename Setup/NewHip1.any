@@ -1,0 +1,159 @@
+AnyFolder NewHip1 =
+{
+  
+  // -------------------- Read in bergmann data ---------------------------
+  
+  AnyFunInterpol BergmannForces = 
+  {
+    
+    FileName = "../Input/bergmann_forces.txt";
+    Type = Bspline;
+  
+  };
+  
+  AnyFloat val = BergmannForces(Main.Studies.InverseDynamicStudy.t);
+  AnyFloat BergForce = -{val[0],val[1],val[2]};
+  
+  
+  
+  //---------------------- Switch of spherical joint reaction forces ---------------------
+  
+  AnyFolder &RightHip = Main.HumanModel.BodyModel.Right.Leg.Jnt.Hip;
+  
+  
+  RightHip =
+  {
+    Constraints.Reaction.Type = {Off,Off,Off};
+  };
+  
+  
+  // --------------------- Define kinematic measures for load application ---------------------------  
+  
+  AnyKinLinear OrthoHip = 
+  {
+    AnyRefFrame &ref0 = Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate;
+    AnyRefFrame &ref1 = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.Right.HipJoint;
+    
+    Ref = 0;
+  };
+  
+  
+  AnyKinMeasureOrg HipX =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {0};
+  };
+  
+  
+  AnyKinMeasureOrg HipY =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {1};
+  };
+
+  
+  
+  AnyKinMeasureOrg HipZ =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {2};
+  };
+
+  
+  // --------------- Apply bergmann contact forces  ---------------------------------------------
+  
+  
+  
+  AnyForce BergmannHipForce =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    F = .BergForce;
+    
+    AnyFloat Fnorm = F/..MuscleContributions.W;
+  };
+  
+  // ------------------- Apply additional hip forces with virtual muscles (high penalty in cost function) --------------------------------------------
+  
+  AnyMuscleModel MusX = 
+  {
+    F0 = 0.1;
+  };
+  
+  AnyMuscleModel MusY = 
+  {
+    F0 = 0.1;
+  };
+  
+  AnyMuscleModel MusZ = 
+  {
+    F0 = 0.1;
+  };
+  
+  
+  AnyGeneralMuscle PosX =
+  {
+    AnyKinMeasure &kin = .HipX;
+    AnyMuscleModel &mus = .MusX;
+    ForceDirection = 1;
+  };
+  
+  
+  AnyGeneralMuscle PosY =
+  {
+    AnyKinMeasure &kin = .HipY;
+    AnyMuscleModel &mus = .MusY;
+    ForceDirection = 1;
+  };
+  
+  
+  AnyGeneralMuscle PosZ =
+  {
+    AnyKinMeasure &kin = .HipZ;
+    AnyMuscleModel &mus = .MusZ;
+    ForceDirection = 1;
+  };
+  
+  
+  
+  
+  
+  
+  AnyGeneralMuscle NegX =
+  {
+    AnyKinMeasure &kin = .HipX;
+    AnyMuscleModel &mus = .MusX;
+  };
+  
+  
+  AnyGeneralMuscle NegY =
+  {
+    AnyKinMeasure &kin = .HipY;
+    AnyMuscleModel &mus = .MusY;
+  };
+  
+  
+  AnyGeneralMuscle NegZ =
+  {
+    AnyKinMeasure &kin = .HipZ;
+    AnyMuscleModel &mus = .MusZ;
+  };
+  
+  
+  
+  //-------------- Net hip force ------------------------------------------
+  
+  AnyFloat HipForceX = (PosX.Fout + NegX.Fout + BergForce[0])/.MuscleContributions.W;
+  AnyFloat HipForceY = (PosY.Fout + NegY.Fout + BergForce[1])/.MuscleContributions.W;
+  AnyFloat HipForceZ = (PosZ.Fout + NegZ.Fout + BergForce[2])/.MuscleContributions.W;
+  
+  
+
+  AnyFloat HipMag = sqrt(HipForceX[0]^2 + HipForceY[0]^2 + HipForceZ[0]^2);
+  
+
+  
+};

@@ -1,0 +1,17 @@
+
+  ForcePlateAutoDetection Plate1 (PLATE_NO=1, 
+  FORCEPLATE_TYPE=2,
+  LIMB1 = Main.HumanModel.BodyModel.Left.Leg.Seg.Foot,
+  LIMB2 = Main.HumanModel.BodyModel.Left.Leg.Seg.Foot) =
+  {
+    Switch_DrawForceVectorFromCOP = Off;
+  };
+  
+  ForcePlateAutoDetection Plate2 (PLATE_NO=2, 
+  FORCEPLATE_TYPE=2,
+  LIMB1 = Main.HumanModel.BodyModel.Right.Leg.Seg.Foot,
+  LIMB2 = Main.HumanModel.BodyModel.Right.Leg.Seg.Foot) =
+  {
+    Switch_DrawForceVectorFromCOP = Off;
+  };
+  

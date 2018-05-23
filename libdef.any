@@ -1,0 +1,35 @@
+// This files configures a few paths before including AnyMocap
+// - The path to save temporary files TEMP_PATH
+// - The path for output files
+// - The path for the AMMR repository to be used
+// - The path for the AnyMocap model
+
+#ifndef TEMP_PATH 
+#path TEMP_PATH "Tmp"
+#endif
+
+#ifndef ANYBODY_PATH_OUTPUT
+#path ANYBODY_PATH_OUTPUT "Tmp"
+#endif
+
+
+#define _HOME_ ANYBODY_PATH_MYFILES 
+#if _HOME_ == "C:\Users\depierie\Documents"
+  #path CAMERA_PATH "..\video-recorder-master\CameraClassTemplate.any"
+  #ifndef AMMR_PATH
+    //#path AMMR_PATH "C:\Users\depierie\Documents\Git\ammr"
+   #path AMMR_PATH "C:\Users\depierie\Documents\Git\ammr - cup_medialization_updated"
+ #endif
+#endif
+
+
+ #ifdef AMMR_PATH
+   #include "<AMMR_PATH>/libdef.any"
+ #else
+    #ifpathexists "../libdef.any"
+    #include "../libdef.any"
+    #else
+    #include "<ANYBODY_PATH_INSTALLDIR>/AMMR/libdef.any"
+    #endif
+ #endif
+

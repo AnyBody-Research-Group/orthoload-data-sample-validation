@@ -1,0 +1,42 @@
+Main.ModelSetup.LabSpecificData = 
+{
+//  #define BONY_LANDMARK_DEFINED_HIPJOINT
+//  
+//  #ifndef TLEM_VERSION
+//  #define TLEM_VERSION "2.0"
+//  #endif
+  
+  #define BM_LEG_MODEL _LEG_MODEL_TLEM2_
+  #define INCLUDE_MUSCLE_WEIGHT_FACTOR 1
+  
+  
+  // You can edit the Body Model: 
+  #path BODY_MODEL_CONFIG_FILE "BodyModelConfig.any"
+  
+  // You can add Extra Drivers in case you don't have enough markers
+  #path MOCAP_EXTRA_DRIVERS_FILE "ExtraDrivers.any"
+   
+  // Setup your Marker Protocol
+  #path MOCAP_MARKER_PROTOCOL_FILE "MarkerProtocol.any"
+   
+  // AutoSetup Switch for standard Force Plates
+   #path MOCAP_FORCE_PLATE_FILE "ForcePlates.any"
+   
+   
+  #path MOCAP_C3DSETTINGS "C3DSettings.any"
+  
+  // Define direction of Gravity; Default is -Z
+   Gravity = -9.81*{0,0,1};
+   
+  // This defines what segment lengths are optimized:
+  OptimizeAnthropometricsOnOff OptimizeAntropometricsOnOff (
+  PelvisWidthOnOff    = "On" , 
+  ThighLengthOnOff    = "On", 
+  ShankLengthOnOff    = "On", 
+  FootLengthOnOff     = "On", 
+  HeadHeightOnOff     = "Off", 
+  TrunkHeightOnOff    = "On", 
+  UpperArmLengthOnOff = "Off",
+  LowerArmLengthOnOff = "Off"
+  ) ={};
+};

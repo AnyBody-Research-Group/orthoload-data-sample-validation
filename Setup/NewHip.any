@@ -1,0 +1,133 @@
+AnyFolder NewHip =
+{
+  
+  
+  AnyFolder &RightHip = Main.HumanModel.BodyModel.Right.Leg.Jnt.Hip;
+  
+  
+  RightHip =
+  {
+    Constraints.Reaction.Type = {Off,Off,Off};
+  };
+  
+  
+  
+  AnyKinLinear OrthoHip = 
+  {
+    AnyRefFrame &ref0 = Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate;
+    AnyRefFrame &ref1 = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.Right.HipJoint;
+    
+    Ref = 0;
+  };
+  
+  
+  AnyKinMeasureOrg HipX =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {0};
+  };
+  
+  
+  AnyKinMeasureOrg HipY =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {1};
+  };
+
+  
+  
+  AnyKinMeasureOrg HipZ =
+  {
+    AnyKinMeasure &ref = .OrthoHip;
+    
+    MeasureOrganizer = {2};
+  };
+
+  
+  
+  AnyMuscleModel MusX = 
+  {
+    F0 = 10;
+  };
+  
+  AnyMuscleModel MusY = 
+  {
+    F0 = 10;
+  };
+  
+  AnyMuscleModel MusZ = 
+  {
+    F0 = 20;
+  };
+  
+  
+  
+  AnyGeneralMuscle PosX =
+  {
+    AnyKinMeasure &kin = .HipX;
+    AnyMuscleModel &mus = .MusX;
+    ForceDirection = 1;
+  };
+  
+  
+  AnyGeneralMuscle PosY =
+  {
+    AnyKinMeasure &kin = .HipY;
+    AnyMuscleModel &mus = .MusY;
+    ForceDirection = 1;
+  };
+  
+  
+  AnyGeneralMuscle PosZ =
+  {
+    AnyKinMeasure &kin = .HipZ;
+    AnyMuscleModel &mus = .MusZ;
+    ForceDirection = 1;
+  };
+  
+  
+  
+  
+  
+  
+  AnyGeneralMuscle NegX =
+  {
+    AnyKinMeasure &kin = .HipX;
+    AnyMuscleModel &mus = .MusX;
+  };
+  
+  
+  AnyGeneralMuscle NegY =
+  {
+    AnyKinMeasure &kin = .HipY;
+    AnyMuscleModel &mus = .MusY;
+  };
+  
+  
+  AnyGeneralMuscle NegZ =
+  {
+    AnyKinMeasure &kin = .HipZ;
+    AnyMuscleModel &mus = .MusZ;
+  };
+  
+  
+  AnyFloat HipForceX = (PosX.Fout + NegX.Fout)/.MuscleContributions.W;
+  AnyFloat HipForceY  = (PosY.Fout + NegY.Fout)/.MuscleContributions.W;
+  AnyFloat HipForceZ  = (PosZ.Fout + NegZ.Fout)/.MuscleContributions.W;
+  
+//  AnyFloat OrtholoadF = {X[0],Y[0],Z[0]}*Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.HipJoint.ARel'*Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.ARel;
+//  
+//  
+//  
+//  AnyFloat HipForceX = OrtholoadF[0];
+//  AnyFloat HipForceY = OrtholoadF[1];
+//  AnyFloat HipForceZ = OrtholoadF[2];
+  
+
+  AnyFloat HipMag = sqrt(HipForceX[0]^2 + HipForceY[0]^2 + HipForceZ[0]^2);
+  
+  
+  
+};

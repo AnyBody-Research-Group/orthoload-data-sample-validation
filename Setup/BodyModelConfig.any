@@ -1,0 +1,30 @@
+ // ----------------------------------------------------------
+// Model configuration:
+// For more info on body model configuration options please load the model and double click on: 
+// #include "<ANYBODY_PATH_BODY>\Documentation\BodyModel.parameters.any"
+// ----------------------------------------------------------
+
+#ifdef _INCLUDE_UPPER_BODY_
+  #define BM_ARM_MUSCLES_BOTH CONST_MUSCLES_NONE  
+  #define BM_TRUNK_NECK ON
+#else
+  #define BM_ARM_RIGHT OFF
+  #define BM_ARM_LEFT OFF
+  #define BM_TRUNK_NECK OFF
+#endif
+
+
+
+#define BM_SCALING CONST_SCALING_LENGTHMASSFAT 
+
+
+
+
+#path BM_MANNEQUIN_FILE "<ANYMOCAP_MODEL_PATH>/Mannequin.any" 
+#path BM_SCALING_ANTHRO_FILE "<ANYMOCAP_MODEL_PATH>/AnyMan.any"
+#define BM_MANNEQUIN_DRIVER_DEFAULT OFF
+#define BM_TRUNK_MUSCLES CONST_MUSCLES_NONE
+
+#ifdef BM_LEG_MUSCLES_BOTH_HILL
+#define BM_LEG_MUSCLES_BOTH CONST_MUSCLES_3E_HILL
+#endif

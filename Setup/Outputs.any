@@ -1,0 +1,123 @@
+
+// Change the default way that hip contact forces are expressed.
+// Now the hip contact forces are expressed with the respect to the 
+// a coordinate system fixed in the pelvis.
+Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg = {
+  AnyRefNode OrtholoadFrame = {
+    sRel = 0.5*(.Right.HipJoint.sRel + .Left.HipJoint.sRel);
+    ARel = RotMat(sRel, .Right.HipJoint.sRel,.L5PelvisJntNode.sRel)*RotMat(-pi/2,x);
+  };
+};
+Main.HumanModel.BodyModel.Right.Leg.MomentMeasure = {
+  AnyForceMomentMeasure HipReactionForce = {
+    AnyForceBase &reac = ..Jnt.Hip.Constraints.Reaction;
+    AnyRefFrame &ref = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.Right.HipJoint;
+  };
+};
+Main.HumanModel.BodyModel.Left.Leg.MomentMeasure = {
+  AnyForceMomentMeasure HipReactionForce = {
+    AnyForceBase &reac = ..Jnt.Hip.Constraints.Reaction;
+    AnyRefFrame &ref = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.Left.HipJoint;
+  };
+};
+//Main.Studies.InverseDynamicStudy.CollectedOuputs = {
+//  RightHip_MediolateralForce     = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[0]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
+//  RightHip_ProximoDistalForce    = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[2]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
+//  RightHip_AnteroPosteriorForce  = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[1]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.HipReactionForce.F';
+//  AnyVar RightHip_Absolute_BW    = ((sqrt(RightHip_MediolateralForce^2) + sqrt(RightHip_ProximoDistalForce^2) + sqrt(RightHip_AnteroPosteriorForce^2)) /(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass) * 9.8);
+//  
+//  LeftHip_MediolateralForce     = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[0]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
+//  LeftHip_ProximoDistalForce    = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[2]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
+//  LeftHip_AnteroPosteriorForce  = Main.HumanModel.BodyModel.Trunk.SegmentsLumbar.PelvisSeg.OrtholoadFrame.Axes'[1]*Main.HumanModel.BodyModel.Left.Leg.MomentMeasure.HipReactionForce.F';
+//  AnyVar LeftHip_Absolute_BW    = ((sqrt(LeftHip_MediolateralForce^2) + sqrt(LeftHip_ProximoDistalForce^2) + sqrt(LeftHip_AnteroPosteriorForce^2)) /(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass) * 9.8);
+//};
+//
+
+
+
+// OrthoLoad 3 Femur coordinate system
+Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh = {
+  
+  AnyRefNode p1 = {
+    sRel = .Scale( {-0.0021, 0.3290, 0.0430});
+    //AnyDrawRefFrame drw = {RGB = {1,0,0}; }; 
+    AnyDrawNode drw = {RGB = {1,0,0};ScaleXYZ = {0.003, 0.003, 0.003}; }; 
+  };
+  AnyRefNode p2 = {
+    sRel = .Scale( {0.0030, -0.0090, 0.0000});
+    //AnyDrawRefFrame drw = {RGB = {1,0,0}; }; 
+    AnyDrawNode drw = {RGB = {1,0,0};ScaleXYZ = {0.003, 0.003, 0.003}; }; 
+    
+  };
+  
+  AnyRefNode EpicondylusFemorisLateralisPosterior = {
+    sRel = .Scale( {-0.0240, -0.0090, 0.0300} );
+    //AnyDrawRefFrame drw = {RGB = {1,0,0}; }; 
+    AnyDrawNode drw = {RGB = {1,0,0};ScaleXYZ = {0.003, 0.003, 0.003}; }; 
+  };
+  
+  AnyRefNode EpicondylusFemorisMedialisPosterior = {
+    sRel = .Scale( {-0.0330, -0.0090, -0.0300} );
+    ARel = RotMat(7.5*pi/180,y);
+    //AnyDrawRefFrame drw = {RGB = {1,0,0}; }; 
+    AnyDrawNode drw = {RGB = {1,0,0};ScaleXYZ = {0.003, 0.003, 0.003}; };  
+  };
+  
+  
+  AnyRefNode OrthoLoad3FemurCoordinate = {
+    AnyVec3 O = .Scale (.StdPar.HipJoint);
+    AnyVec3 Z =  .Scale(.p1.sRel) - .Scale(.p2.sRel);
+    AnyVec3 Y = cross(Z,...Sign*(.Scale(.EpicondylusFemorisLateralisPosterior.sRel ) - .Scale(.EpicondylusFemorisMedialisPosterior.sRel ) ));
+    AnyVec3 X = cross(Y,Z);      
+    sRel = O;
+    ARel = {X/vnorm(X),Y/vnorm(Y),Z/vnorm(Z)}';
+    AnyDrawRefFrame drw = {RGB = {0,0,1}; ScaleXYZ = {0.1, 0.1, 0.1};
+ };
+ 
+  };
+};
+
+Main.HumanModel.BodyModel.Right.Leg.MomentMeasure = {
+  AnyForceMomentMeasure Ortho3HipReactionForce = {
+    AnyForceBase &reac = Main.HumanModel.BodyModel.Right.Leg.Jnt.Hip.Constraints.Reaction;
+    AnyRefFrame &ref = Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.HipJoint;
+  };
+};
+Main.Studies.InverseDynamicStudy.CollectedOuputs = {
+  AnyFloat RightHip_MediolateralForce_ortho3     = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[0]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
+  AnyFloat RightHip_ProximoDistalForce_ortho3    = -1*(Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[2]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
+  AnyFloat RightHip_AnteroPosteriorForce_ortho3  = (Main.HumanModel.BodyModel.Right.Leg.Seg.Thigh.OrthoLoad3FemurCoordinate.Axes'[1]*Main.HumanModel.BodyModel.Right.Leg.MomentMeasure.Ortho3HipReactionForce.F')/(Main.ModelSetup.SubjectSpecificData.Anthropometrics.BodyMass*9.81);
+};
+
+AnyFolder Normalized = {
+  #define _TIMES  Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data
+  #define _LABELS Main.ModelSetup.C3DFileData.Groups.EVENT.LABELS.Data
+  
+
+  
+  Normalized_Absicssa Right_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
+    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[1][1];
+    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[4][1];
+    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[5][1];
+    MiddleEventPercent = 60;
+  };
+  Normalized_Absicssa Left_GaitCycle (Study = Main.Studies.InverseDynamicStudy ) = {
+    StartEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[0][1];
+    MiddleEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[2][1];
+    EndEvent = Main.ModelSetup.C3DFileData.Groups.EVENT.TIMES.Data[3][1];
+    MiddleEventPercent = 60;
+  };
+  
+  
+};
+//  
+
+
+
+
+
+
+
+
+
+
